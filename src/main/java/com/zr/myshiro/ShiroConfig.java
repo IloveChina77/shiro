@@ -67,8 +67,9 @@ public class ShiroConfig {
         // 放行一些请求
         map.put("/static/index.html","anon");
         map.put("/doLogin", "anon");
-        map.put("/swagger-ui.html", "anon");
-        map.put("/v2/api-docs", "anon");
+        map.put("/swagger**/**", "anon");
+        map.put("/webjars/**", "anon");
+        map.put("/v2/**", "anon");
         // 其余接口一律拦截
         map.put("/**", "authc");
 
