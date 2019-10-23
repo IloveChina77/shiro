@@ -57,13 +57,17 @@ public class MyRealm  extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        System.err.println("hhhh");
+        System.err.println("进到了授权中心");
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         // mock 查库获取 用户角色和权限
 //        simpleAuthorizationInfo.addStringPermission("/doOperation");
-        Set<String> set = new HashSet<>();
-        set.add("/ds");
-        simpleAuthorizationInfo.setStringPermissions(set);
+        Set<String> roles = new HashSet<>();
+        roles.add("admin");
+        simpleAuthorizationInfo.addRoles(roles);
+
+        Set<String> permissions = new HashSet<>();
+        permissions.add("/ds");
+        simpleAuthorizationInfo.setStringPermissions(permissions);
 
         return simpleAuthorizationInfo;
     }

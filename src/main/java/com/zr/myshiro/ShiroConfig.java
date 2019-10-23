@@ -1,7 +1,8 @@
 package com.zr.myshiro;
 
-import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.mgt.SessionStorageEvaluator;
+import org.apache.shiro.spring.LifecycleBeanPostProcessor;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.mgt.DefaultWebSessionStorageEvaluator;
@@ -30,7 +31,7 @@ public class ShiroConfig {
      * @reutrn the instance of class MyRealm
      */
     @Bean
-    MyRealm myRealm() {
+    public MyRealm myRealm() {
         return new MyRealm();
     }
 
@@ -39,10 +40,19 @@ public class ShiroConfig {
      * @return the instance of class DefaultWebSecurity
      */
     @Bean
-    DefaultSecurityManager defaultSecurityManager() {
+    DefaultWebSecurityManager defaultWebSecurityManager(MyRealm myRealm) {
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
-        defaultWebSecurityManager.setRealm(myRealm());
+        defaultWebSecurityManager.setRealm(myRealm);
         return defaultWebSecurityManager;
+    }
+
+    /**
+     * lifecycleBeanPostProcessor
+     *
+     */
+    @Bean
+    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
+        return new LifecycleBeanPostProcessor();
     }
 
     /**
@@ -50,11 +60,11 @@ public class ShiroConfig {
      * @reutrn
      */
     @Bean
-    ShiroFilterFactoryBean shiroFilterFactoryBean() {
+    ShiroFilterFactoryBean shiroFilterFactoryBean(DefaultWebSecurityManager defaultWebSecurityManager) {
        // ShiroFilterFactoryBean 应该是集合了 Filter 和 Factory 的功能
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
        // 指定SecurityManager
-        shiroFilterFactoryBean.setSecurityManager(defaultSecurityManager());
+        shiroFilterFactoryBean.setSecurityManager(defaultWebSecurityManager);
        // 指定 登录url
         shiroFilterFactoryBean.setLoginUrl("/index.html");
        // 指定登录成功页面
@@ -88,12 +98,12 @@ public class ShiroConfig {
         return  sessionStorageEvaluator;
     }
 
-    @Bean
+/*    @Bean
     public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
         DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
         defaultAdvisorAutoProxyCreator.setUsePrefix(true);
         return defaultAdvisorAutoProxyCreator;
-    }
+    }*/
 
 
 
