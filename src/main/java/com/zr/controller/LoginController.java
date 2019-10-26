@@ -15,32 +15,34 @@ public class LoginController {
     @PostMapping("/doLogin")
     public String doLogin(String username, String password) {
 
-        Subject subject = SecurityUtils.getSubject();
-        subject.login(new UsernamePasswordToken(username, password));
+        Subject currentUser = SecurityUtils.getSubject();
+        currentUser.login(new UsernamePasswordToken(username, password));
         return "you have login now";
+    }
+
+    @GetMapping("/logout")
+    public String logout() {
+        Subject currentUser = SecurityUtils.getSubject();
+        currentUser.logout();
+        return "成功登出";
     }
 
     @GetMapping("/hehe")
     public String sayHeHe(){
+        System.err.println("到了，/hehe");
         return "呵呵，就完事了!!";
     }
 
     @GetMapping("/doOperation")
     @RequiresPermissions(value = {"/doo"})
     public String doOperation(){
+        System.err.println("到了，/doOperation");
         return "Do operation!!!";
     }
 
     @GetMapping("/unauthorizedUrl")
     public String error(){
         return "error";
-    }
-
-    @GetMapping("/logout")
-    public String logout() {
-        Subject subject = SecurityUtils.getSubject();
-        subject.logout();
-        return "成功登出";
     }
 
 
