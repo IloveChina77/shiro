@@ -22,12 +22,10 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
-
     java 9 or later
     <properties>
         <maven.compiler.release>11</maven.compiler.release>
     </properties>
-
     <build>
         <pluginManagement>
             <plugins>
@@ -40,7 +38,9 @@
         </pluginManagement>
     </build>
 -->
-
+    <properties>
+        <maven.compiler.release>12</maven.compiler.release>
+    </properties>
 
     <dependencies>
 
@@ -89,9 +89,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-<!--                <configuration>
-                    <fork>true</fork>
-                </configuration>-->
             </plugin>
         </plugins>
     </build>
